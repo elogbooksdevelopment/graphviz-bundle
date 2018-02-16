@@ -1,0 +1,25 @@
+{
+    "name": "six-paths/graphviz-bundle",
+    "type": "symfony-bundle",
+    "description": "A symfony bundle to generate graphviz graphs from annotations",
+    "keywords": ["Graphviz"],
+    "homepage": "https://github.com/six-paths/graphviz-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jack O'Hara",
+            "email": "jack.ohara@sixpaths.co.uk"
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sixpaths\\GraphvizBundle\\": "src/Sixpaths/GraphvizBundle/"
+        }
+    }
+}
