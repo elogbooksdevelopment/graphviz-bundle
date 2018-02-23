@@ -39,6 +39,12 @@ class GenerateGraphCommand extends ContainerAwareCommand
     protected $submachines = [];
     protected $usedTransitions = [];
 
+    private $subMachineColours = [
+        '#e1eeee',
+        '#a18878',
+        '#89a1a1',
+    ];
+
     protected function configure()
     {
         $this->setName('sixpaths:graphviz:generate')
@@ -144,10 +150,16 @@ class GenerateGraphCommand extends ContainerAwareCommand
 
     private function getGraphSubMachines(): string
     {
+        $index = 0;
         $output = [];
 
         foreach ($this->submachines as $name => $states) {
             $outputStates = [];
+
+            if ($index > count($this->subMachineColours)) {
+                $index = 0;
+            }
+
             foreach ($states as $transition) {
                 $transition = clone $transition;
                 $this->removeAttribute($transition, 'label');
@@ -156,13 +168,14 @@ class GenerateGraphCommand extends ContainerAwareCommand
 
             $output[] = sprintf("
                 subgraph cluster%s {
+                    label = \"Sub Machine: %s\"
                     style = filled
-                    color = \"#efefef\"
+                    color = \"%s\"
                     node [style = filled fillcolor = white color = grey]
 
                     %s
                 }
-            ", $name, implode(" ", $outputStates));
+            ", $name, ucwords(strtolower($name)), $this->subMachineColours[$index++], implode(" ", $outputStates));
         }
 
         return implode("", $output);
