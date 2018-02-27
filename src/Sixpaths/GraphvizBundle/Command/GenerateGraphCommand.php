@@ -130,6 +130,7 @@ class GenerateGraphCommand extends ContainerAwareCommand
         print(
             $this->getGraphHeader() .
             $this->getGraphSubMachines() .
+            $this->getGraphStatesOutsideSubmachines() .
             $this->getGraphProxyStates() .
             $this->getGraphStates() .
             $this->getGraphFooter()
@@ -179,6 +180,19 @@ class GenerateGraphCommand extends ContainerAwareCommand
         }
 
         return implode("", $output);
+    }
+
+    private function getGraphStatesOutsideSubmachines(): string
+    {
+        $output = [];
+
+        foreach ($this->transitions as $transition) {
+            if (!isset($transition->submachine)) {
+                $output[] = sprintf("\"%s\" %s", $transition->to, $this->getTransitionAttributes($transition));
+            }
+        }
+
+        return implode("\n", $output);
     }
 
     private function getGraphProxyStates(): string
